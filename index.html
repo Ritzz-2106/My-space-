@@ -1,1 +1,2857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>My Space</title>
+
+<style>
+:root {
+    --bg: #0d0d12;
+    --surface: #17171f;
+    --surface2: #20202a;
+    --text: #f5f3fa;
+    --muted: #aaa6b5;
+    --border: #2c2b36;
+    --accent: #8b6cff;
+    --accentSoft: rgba(139,108,255,.16);
+    --danger: #ff6677;
+    --success: #62d39a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    transition: .25s;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    min-height: 100vh;
+    padding-bottom: 90px;
+}
+
+.container {
+    width: min(900px, 100%);
+    margin: auto;
+    padding: 0 18px;
+}
+
+/* HEADER */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 18px;
+
+    background: rgba(13,13,18,.9);
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.account {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    border: 1px solid var(--border);
+
+    background: var(--surface);
+    color: var(--text);
+}
+
+/* PAGES */
+
+.page {
+    display: none;
+    padding: 25px 0;
+    animation: appear .18s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.title {
+    margin-bottom: 5px;
+    font-size: 28px;
+}
+
+.subtitle {
+    margin-top: 0;
+    color: var(--muted);
+}
+
+/* CARDS */
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 18px;
+    margin: 14px 0;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+/* HOME */
+
+.greeting h1 {
+    margin-bottom: 5px;
+}
+
+.greeting p {
+    color: var(--muted);
+}
+
+.xp-card {
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            #30245c
+        );
+
+    border: none;
+    color: white;
+}
+
+.xp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.xp-number {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.progress-track {
+    height: 10px;
+    margin-top: 15px;
+
+    border-radius: 20px;
+    background: rgba(255,255,255,.2);
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+
+    background: white;
+
+    transition: width .3s;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+
+.stat {
+    padding: 14px 8px;
+
+    text-align: center;
+
+    background: var(--surface2);
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 21px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* BUTTONS */
+
+.primary {
+    width: 100%;
+
+    border: none;
+    border-radius: 14px;
+
+    padding: 13px;
+
+    background: var(--accent);
+    color: white;
+
+    font-weight: 700;
+}
+
+.secondary {
+    width: 100%;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    padding: 12px;
+
+    background: var(--surface2);
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+.primary:active,
+.secondary:active {
+    transform: scale(.98);
+}
+
+/* FORMS */
+
+.form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+input,
+select {
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface2);
+    color: var(--text);
+
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--accent);
+}
+
+/* TASKS */
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.task:last-child {
+    border-bottom: none;
+}
+
+.check {
+    width: 21px;
+    height: 21px;
+    accent-color: var(--accent);
+}
+
+.task-info {
+    flex: 1;
+}
+
+.task-name {
+    font-weight: 700;
+}
+
+.task-name.done {
+    text-decoration: line-through;
+    opacity: .45;
+}
+
+.task-meta {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.priority {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.priority.high {
+    color: #ff6878;
+}
+
+.priority.medium {
+    color: #f0c85b;
+}
+
+.priority.low {
+    color: var(--success);
+}
+
+.more {
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 20px;
+}
+
+/* TASK MENU */
+
+.task-menu {
+    position: absolute;
+    right: 15px;
+    margin-top: 5px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+
+    overflow: hidden;
+
+    z-index: 10;
+}
+
+.task-menu button {
+    display: block;
+
+    width: 150px;
+
+    padding: 12px;
+
+    border: none;
+
+    background: var(--surface);
+    color: var(--text);
+
+    text-align: left;
+}
+
+.task-menu button:hover {
+    background: var(--surface2);
+}
+
+.task-wrapper {
+    position: relative;
+}
+
+/* FOCUS */
+
+.focus-box {
+    text-align: center;
+    padding: 30px 18px;
+}
+
+.timer {
+    font-size: 64px;
+    font-weight: 800;
+
+    margin: 25px 0;
+}
+
+.duration-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+}
+
+.duration {
+    padding: 11px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface2);
+    color: var(--text);
+}
+
+.duration.selected {
+    background: var(--accentSoft);
+    border-color: var(--accent);
+}
+
+.custom-time {
+    margin-top: 10px;
+}
+
+/* WORLD */
+
+.world {
+    position: relative;
+
+    height: 350px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+    border: 1px solid var(--border);
+
+    background:
+        linear-gradient(
+            #171a3c 0%,
+            #283b6a 58%,
+            #315d43 59%,
+            #284936 100%
+        );
+}
+
+.moon {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+
+    font-size: 50px;
+}
+
+.house {
+    position: absolute;
+    left: 40%;
+    bottom: 45px;
+
+    font-size: 75px;
+}
+
+.tree {
+    position: absolute;
+    bottom: 35px;
+
+    font-size: 55px;
+}
+
+.tree.one {
+    left: 10%;
+}
+
+.tree.two {
+    right: 10%;
+}
+
+.world-level {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    background: rgba(0,0,0,.35);
+}
+
+/* ACCOUNT */
+
+.avatar {
+    width: 75px;
+    height: 75px;
+
+    margin: auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--accentSoft);
+
+    font-size: 38px;
+}
+
+.profile {
+    text-align: center;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+}
+
+.color {
+    height: 45px;
+
+    border-radius: 12px;
+    border: 2px solid transparent;
+}
+
+.purple { background:#8b6cff; }
+.blue { background:#4c8dff; }
+.green { background:#52b788; }
+.pink { background:#ed6fa9; }
+.red { background:#e45b67; }
+.orange { background:#f39a4a; }
+.yellow { background:#e6c84f; }
+.cyan { background:#40c8d8; }
+
+/* NAV */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 76px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    background: rgba(20,20,27,.95);
+    backdrop-filter: blur(15px);
+
+    border-top: 1px solid var(--border);
+
+    z-index: 100;
+}
+
+.nav {
+    border: none;
+    background: none;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.nav span {
+    font-size: 21px;
+}
+
+.nav.active {
+    color: var(--accent);
+}
+
+/* LIGHT */
+
+body.light {
+    --bg: #f5f3f8;
+    --surface: #ffffff;
+    --surface2: #efedf3;
+    --text: #25222d;
+    --muted: #77727f;
+    --border: #ddd9e5;
+}
+
+body.light .header {
+    background: rgba(245,243,248,.92);
+}
+
+body.light .bottom-nav {
+    background: rgba(255,255,255,.95);
+}
+
+/* BACKGROUNDS */
+
+body.deep-purple {
+    --bg:#0b0712;
+}
+
+body.navy {
+    --bg:#060d18;
+}
+
+body.deep-green {
+    --bg:#07110c;
+}
+
+body.charcoal {
+    --bg:#111111;
+}
+
+/* DESKTOP */
+
+@media (min-width:700px) {
+
+    .bottom-nav {
+        width: 700px;
+        left: 50%;
+        right: auto;
+
+        transform: translateX(-50%);
+
+        border-radius: 20px 20px 0 0;
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+    <div class="logo">
+        My <span>Space</span> ✨
+    </div>
+
+    <button
+        class="account"
+        onclick="openPage('account')">
+
+        👤
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- HOME -->
+
+<section
+    id="home"
+    class="page active">
+
+    <div class="greeting">
+
+        <h1 id="greeting">
+            Hey! 👋
+        </h1>
+
+        <p>
+            Your space. Your progress. Your world.
+        </p>
+
+    </div>
+
+
+    <div class="card xp-card">
+
+        <div class="xp-top">
+
+            <div>
+
+                <div>
+                    Level <span id="level">1</span> ⭐
+                </div>
+
+                <div class="xp-number">
+                    <span id="xp">0</span> XP
+                </div>
+
+            </div>
+
+            <div style="font-size:42px">
+                🌟
+            </div>
+
+        </div>
+
+
+        <div class="progress-track">
+
+            <div
+                id="xpBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <strong id="completedCount">
+                0
+            </strong>
+
+            <span>
+                Done
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong id="totalCount">
+                0
+            </strong>
+
+            <span>
+                Tasks
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong id="revisionCount">
+                0
+            </strong>
+
+            <span>
+                Revision
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📋 Today's Tasks
+        </h3>
+
+        <div id="homeTasks">
+        </div>
+
+    </div>
+
+
+    <button
+        class="primary"
+        onclick="openPage('plan')">
+
+        🗓️ Plan My Day
+
+    </button>
+
+
+    <br><br>
+
+
+    <button
+        class="secondary"
+        onclick="openPage('world')">
+
+        🌎 Explore My World
+
+    </button>
+
+</section>
+
+
+
+<!-- TASKS -->
+
+<section
+    id="tasks"
+    class="page">
+
+    <h2 class="title">
+        📝 Tasks
+    </h2>
+
+    <p class="subtitle">
+        Add them your way.
+    </p>
+
+
+    <div class="card">
+
+        <form
+            id="taskForm"
+            class="form"
+            onsubmit="saveTask(event)">
+
+            <input
+                type="hidden"
+                id="editingId">
+
+
+            <label>
+                Task *
+            </label>
+
+            <input
+                id="taskName"
+                placeholder="Finish Physics worksheet"
+                required>
+
+
+            <label>
+                Subject
+            </label>
+
+            <input
+                id="taskSubject"
+                placeholder="Physics">
+
+
+            <label>
+                Estimated time (minutes)
+            </label>
+
+            <input
+                id="taskTime"
+                type="number"
+                min="1"
+                placeholder="e.g. 45">
+
+
+            <label>
+                Difficulty
+            </label>
+
+            <select id="taskDifficulty">
+
+                <option value="">
+                    Choose difficulty
+                </option>
+
+                <option>
+                    Easy
+                </option>
+
+                <option>
+                    Medium
+                </option>
+
+                <option>
+                    Hard
+                </option>
+
+            </select>
+
+
+            <label>
+                📅 Deadline
+            </label>
+
+            <input
+                id="taskDeadline"
+                type="date">
+
+
+            <label>
+                🚨 Priority
+            </label>
+
+            <select id="taskPriority">
+
+                <option value="">
+                    Choose priority
+                </option>
+
+                <option value="High">
+                    🔴 High
+                </option>
+
+                <option value="Medium">
+                    🟡 Medium
+                </option>
+
+                <option value="Low">
+                    🟢 Low
+                </option>
+
+            </select>
+
+
+            <button
+                id="saveTaskButton"
+                class="primary"
+                type="submit">
+
+                + Add Task
+
+            </button>
+
+
+            <button
+                id="cancelEditButton"
+                class="secondary"
+                type="button"
+                onclick="cancelEdit()"
+                style="display:none">
+
+                Cancel Edit
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div id="taskList">
+    </div>
+
+</section>
+
+
+
+<!-- PLAN -->
+
+<section
+    id="plan"
+    class="page">
+
+    <h2 class="title">
+        🗓️ Plan
+    </h2>
+
+    <p class="subtitle">
+        Suggestions, not orders. You stay in control.
+    </p>
+
+
+    <div class="card">
+
+        <h3>
+            What do you want?
+        </h3>
+
+
+        <button
+            class="secondary"
+            onclick="manualPlan()">
+
+            ✏️ I'll plan myself
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="primary"
+            onclick="suggestPlan()">
+
+            🧠 Help me plan
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📋 Suggested Order
+        </h3>
+
+        <div id="planList">
+
+            <p style="color:var(--muted)">
+                Nothing suggested yet.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- FOCUS -->
+
+<section
+    id="focus"
+    class="page">
+
+    <h2 class="title">
+        🎯 Focus
+    </h2>
+
+    <p class="subtitle">
+        You choose how long.
+    </p>
+
+
+    <div class="card focus-box">
+
+        <p>
+            What are you working on?
+        </p>
+
+
+        <select id="focusTask">
+
+            <option value="">
+                Choose a task
+            </option>
+
+        </select>
+
+
+        <div
+            id="timer"
+            class="timer">
+
+            00:00
+
+        </div>
+
+
+        <p>
+            How long do you want to focus?
+        </p>
+
+
+        <div class="duration-grid">
+
+            <button
+                class="duration"
+                onclick="chooseDuration(10,this)">
+
+                10 min
+
+            </button>
+
+            <button
+                class="duration"
+                onclick="chooseDuration(20,this)">
+
+                20 min
+
+            </button>
+
+            <button
+                class="duration"
+                onclick="chooseDuration(30,this)">
+
+                30 min
+
+            </button>
+
+            <button
+                class="duration"
+                onclick="chooseDuration(45,this)">
+
+                45 min
+
+            </button>
+
+            <button
+                class="duration"
+                onclick="chooseDuration(60,this)">
+
+                60 min
+
+            </button>
+
+            <button
+                class="duration"
+                onclick="customDuration(this)">
+
+                Custom
+
+            </button>
+
+        </div>
+
+
+        <input
+            id="customMinutes"
+            class="custom-time"
+            type="number"
+            min="1"
+            placeholder="Custom minutes"
+            style="display:none">
+
+
+        <br>
+
+
+        <button
+            id="startFocus"
+            class="primary"
+            onclick="toggleTimer()">
+
+            ▶ Start
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="resetTimer()">
+
+            ↻ Reset
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            ☕ Break reminder
+        </h3>
+
+        <p>
+            💧 Drink some water
+        </p>
+
+        <p>
+            🚶 Stretch or walk around
+        </p>
+
+        <p>
+            👀 Rest your eyes
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- REVISION -->
+
+<section
+    id="revision"
+    class="page">
+
+    <h2 class="title">
+        📚 Revision
+    </h2>
+
+    <p class="subtitle">
+        Bring important topics back regularly.
+    </p>
+
+
+    <div class="card">
+
+        <form
+            class="form"
+            onsubmit="addRevision(event)">
+
+            <label>
+                Topic
+            </label>
+
+            <input
+                id="revisionName"
+                placeholder="Mole Concept"
+                required>
+
+
+            <label>
+                Revision date
+            </label>
+
+            <input
+                id="revisionDate"
+                type="date">
+
+
+            <button
+                class="primary">
+
+                + Add Revision
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🔄 Your Revision
+        </h3>
+
+        <div id="revisionList">
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- WORLD -->
+
+<section
+    id="world"
+    class="page">
+
+    <h2 class="title">
+        🌎 My World
+    </h2>
+
+    <p class="subtitle">
+        Your progress builds your world.
+    </p>
+
+
+    <div class="world">
+
+        <div class="world-level">
+
+            Level
+            <span id="worldLevel">
+                1
+            </span>
+            ⭐
+
+        </div>
+
+
+        <div class="moon">
+            🌙
+        </div>
+
+
+        <div class="tree one">
+            🌳
+        </div>
+
+
+        <div class="tree two">
+            🌲
+        </div>
+
+
+        <div class="house">
+            🏡
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🎁 Next reward
+        </h3>
+
+        <p id="reward">
+            Keep earning XP!
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ACCOUNT -->
+
+<section
+    id="account"
+    class="page">
+
+    <h2 class="title">
+        👤 My Account
+    </h2>
+
+
+    <div class="card profile">
+
+        <div class="avatar">
+            ✨
+        </div>
+
+        <h3 id="profileName">
+            Student
+        </h3>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🎨 Accent Colour
+        </h3>
+
+
+        <div class="color-grid">
+
+            <button
+                class="color purple"
+                onclick="setAccent('#8b6cff')">
+            </button>
+
+            <button
+                class="color blue"
+                onclick="setAccent('#4c8dff')">
+            </button>
+
+            <button
+                class="color green"
+                onclick="setAccent('#52b788')">
+            </button>
+
+            <button
+                class="color pink"
+                onclick="setAccent('#ed6fa9')">
+            </button>
+
+            <button
+                class="color red"
+                onclick="setAccent('#e45b67')">
+            </button>
+
+            <button
+                class="color orange"
+                onclick="setAccent('#f39a4a')">
+            </button>
+
+            <button
+                class="color yellow"
+                onclick="setAccent('#e6c84f')">
+            </button>
+
+            <button
+                class="color cyan"
+                onclick="setAccent('#40c8d8')">
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🌙 Appearance
+        </h3>
+
+
+        <button
+            class="secondary"
+            onclick="setMode('dark')">
+
+            🌙 Dark
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setMode('light')">
+
+            ☀️ Light
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setMode('device')">
+
+            🖥️ Follow Device
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🖤 Background
+        </h3>
+
+
+        <button
+            class="secondary"
+            onclick="setBackground('default')">
+
+            Dark
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setBackground('deep-purple')">
+
+            Deep Purple
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setBackground('navy')">
+
+            Navy
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setBackground('deep-green')">
+
+            Deep Green
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            class="secondary"
+            onclick="setBackground('charcoal')">
+
+            Charcoal
+
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            ✏️ Nickname
+        </h3>
+
+
+        <form
+            class="form"
+            onsubmit="saveNickname(event)">
+
+            <input
+                id="nickname"
+                placeholder="What should we call you?">
+
+
+            <button
+                class="primary">
+
+                Save
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- NAV -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav active"
+        data-page="home"
+        onclick="openPage('home')">
+
+        <span>🏠</span>
+        Home
+
+    </button>
+
+
+    <button
+        class="nav"
+        data-page="tasks"
+        onclick="openPage('tasks')">
+
+        <span>📝</span>
+        Tasks
+
+    </button>
+
+
+    <button
+        class="nav"
+        data-page="plan"
+        onclick="openPage('plan')">
+
+        <span>🗓️</span>
+        Plan
+
+    </button>
+
+
+    <button
+        class="nav"
+        data-page="focus"
+        onclick="openPage('focus')">
+
+        <span>🎯</span>
+        Focus
+
+    </button>
+
+
+    <button
+        class="nav"
+        data-page="revision"
+        onclick="openPage('revision')">
+
+        <span>📚</span>
+        Revision
+
+    </button>
+
+</nav>
+
+</div>
+
+
+<script>
+
+/* ==========================
+   DATA
+========================== */
+
+const defaultData = {
+    nickname: "Student",
+    xp: 0,
+    tasks: [],
+    revisions: [],
+    accent: "#8b6cff",
+    mode: "dark",
+    background: "default"
+};
+
+let data =
+    JSON.parse(localStorage.getItem("mySpaceV2"))
+    || defaultData;
+
+
+/* ==========================
+   SAVE
+========================== */
+
+function save() {
+
+    localStorage.setItem(
+        "mySpaceV2",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* ==========================
+   NAVIGATION
+========================== */
+
+function openPage(page) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(p =>
+            p.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(page)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav")
+        .forEach(n => {
+
+            n.classList.remove("active");
+
+            if (n.dataset.page === page) {
+                n.classList.add("active");
+            }
+
+        });
+
+
+    if (page === "focus") {
+        updateFocusTasks();
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ==========================
+   TASK SAVE / EDIT
+========================== */
+
+function saveTask(event) {
+
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById("editingId").value;
+
+
+    const taskData = {
+
+        name:
+            document.getElementById("taskName")
+                .value.trim(),
+
+        subject:
+            document.getElementById("taskSubject")
+                .value.trim(),
+
+        time:
+            document.getElementById("taskTime")
+                .value,
+
+        difficulty:
+            document.getElementById("taskDifficulty")
+                .value,
+
+        deadline:
+            document.getElementById("taskDeadline")
+                .value,
+
+        priority:
+            document.getElementById("taskPriority")
+                .value
+
+    };
+
+
+    if (!taskData.name) return;
+
+
+    if (id) {
+
+        const task =
+            data.tasks.find(
+                t => t.id == id
+            );
+
+
+        if (task) {
+
+            task.name = taskData.name;
+            task.subject = taskData.subject;
+            task.time = taskData.time;
+            task.difficulty = taskData.difficulty;
+            task.deadline = taskData.deadline;
+            task.priority = taskData.priority;
+
+        }
+
+    } else {
+
+        data.tasks.push({
+
+            id: Date.now(),
+
+            ...taskData,
+
+            completed: false
+
+        });
+
+    }
+
+
+    save();
+
+    resetTaskForm();
+
+    renderTasks();
+
+    updateHome();
+
+}
+
+
+/* ==========================
+   EDIT
+========================== */
+
+function editTask(id) {
+
+    const task =
+        data.tasks.find(
+            t => t.id === id
+        );
+
+
+    if (!task) return;
+
+
+    document.getElementById("editingId")
+        .value = task.id;
+
+
+    document.getElementById("taskName")
+        .value = task.name;
+
+
+    document.getElementById("taskSubject")
+        .value = task.subject;
+
+
+    document.getElementById("taskTime")
+        .value = task.time;
+
+
+    document.getElementById("taskDifficulty")
+        .value = task.difficulty;
+
+
+    document.getElementById("taskDeadline")
+        .value = task.deadline;
+
+
+    document.getElementById("taskPriority")
+        .value = task.priority;
+
+
+    document.getElementById("saveTaskButton")
+        .textContent = "💾 Save Changes";
+
+
+    document.getElementById("cancelEditButton")
+        .style.display = "block";
+
+
+    openPage("tasks");
+
+}
+
+
+/* ==========================
+   CANCEL EDIT
+========================== */
+
+function cancelEdit() {
+
+    resetTaskForm();
+
+}
+
+
+function resetTaskForm() {
+
+    document.getElementById("taskForm")
+        .reset();
+
+
+    document.getElementById("editingId")
+        .value = "";
+
+
+    document.getElementById("saveTaskButton")
+        .textContent = "+ Add Task";
+
+
+    document.getElementById("cancelEditButton")
+        .style.display = "none";
+
+}
+
+
+/* ==========================
+   COMPLETE
+========================== */
+
+function completeTask(id) {
+
+    const task =
+        data.tasks.find(
+            t => t.id === id
+        );
+
+
+    if (!task || task.completed)
+        return;
+
+
+    task.completed = true;
+
+    data.xp += 10;
+
+    save();
+
+    renderTasks();
+
+    updateHome();
+
+}
+
+
+/* ==========================
+   DELETE
+========================== */
+
+function deleteTask(id) {
+
+    if (!confirm("Delete this task?"))
+        return;
+
+
+    data.tasks =
+        data.tasks.filter(
+            t => t.id !== id
+        );
+
+
+    save();
+
+    renderTasks();
+
+    updateHome();
+
+}
+
+
+/* ==========================
+   TASK MENU
+========================== */
+
+function toggleMenu(id) {
+
+    const menu =
+        document.getElementById(
+            "menu-" + id
+        );
+
+
+    document
+        .querySelectorAll(".task-menu")
+        .forEach(m => {
+
+            if (m !== menu) {
+                m.remove();
+            }
+
+        });
+
+
+    if (menu) {
+
+        menu.remove();
+
+    } else {
+
+        const wrapper =
+            document.getElementById(
+                "wrapper-" + id
+            );
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className = "task-menu";
+
+        div.id = "menu-" + id;
+
+
+        div.innerHTML = `
+
+            <button onclick="editTask(${id})">
+                ✏️ Edit
+            </button>
+
+            <button onclick="completeTask(${id})">
+                ☑️ Mark complete
+            </button>
+
+            <button onclick="deleteTask(${id})">
+                🗑️ Delete
+            </button>
+        `;
+
+
+        wrapper.appendChild(div);
+
+    }
+
+}
+
+
+/* ==========================
+   RENDER TASKS
+========================== */
+
+function taskHTML(task) {
+
+    const priority =
+        task.priority || "No priority";
+
+
+    const priorityClass =
+        task.priority
+            ? task.priority.toLowerCase()
+            : "";
+
+
+    return `
+
+    <div
+        class="task-wrapper"
+        id="wrapper-${task.id}">
+
+        <div class="task">
+
+            <input
+                class="check"
+                type="checkbox"
+                ${task.completed ? "checked" : ""}
+                onchange="completeTask(${task.id})">
+
+
+            <div class="task-info">
+
+                <div
+                    class="task-name
+                    ${task.completed ? "done" : ""}">
+
+                    ${escapeHTML(task.name)}
+
+                </div>
+
+
+                <div class="task-meta">
+
+                    ${task.subject
+                        ? escapeHTML(task.subject)
+                        : "No subject"}
+
+                    ${task.time
+                        ? " • " + task.time + " min"
+                        : ""}
+
+                    ${task.difficulty
+                        ? " • " + task.difficulty
+                        : ""}
+
+                    ${task.deadline
+                        ? " • 📅 " + formatDate(task.deadline)
+                        : ""}
+
+                    <br>
+
+                    <span
+                        class="priority ${priorityClass}">
+
+                        ${priority}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="more"
+                onclick="toggleMenu(${task.id})">
+
+                ⋯
+
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function renderTasks() {
+
+    const list =
+        document.getElementById("taskList");
+
+
+    if (data.tasks.length === 0) {
+
+        list.innerHTML = `
+
+            <div class="card">
+
+                <p style="color:var(--muted)">
+                    No tasks yet. Add your first one! ✨
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        data.tasks
+            .map(taskHTML)
+            .join("");
+
+}
+
+
+/* ==========================
+   HOME
+========================== */
+
+function updateHome() {
+
+    const completed =
+        data.tasks.filter(
+            t => t.completed
+        ).length;
+
+
+    document.getElementById("completedCount")
+        .textContent = completed;
+
+
+    document.getElementById("totalCount")
+        .textContent = data.tasks.length;
+
+
+    document.getElementById("revisionCount")
+        .textContent = data.revisions.length;
+
+
+    document.getElementById("xp")
+        .textContent = data.xp;
+
+
+    const level =
+        Math.floor(data.xp / 100) + 1;
+
+
+    document.getElementById("level")
+        .textContent = level;
+
+
+    document.getElementById("worldLevel")
+        .textContent = level;
+
+
+    document.getElementById("xpBar")
+        .style.width =
+        (data.xp % 100) + "%";
+
+
+    document.getElementById("greeting")
+        .textContent =
+        `Hey ${data.nickname}! 👋`;
+
+
+    document.getElementById("profileName")
+        .textContent =
+        data.nickname;
+
+
+    const home =
+        document.getElementById("homeTasks");
+
+
+    const unfinished =
+        data.tasks.filter(
+            t => !t.completed
+        );
+
+
+    if (unfinished.length === 0) {
+
+        home.innerHTML = `
+
+            <p style="color:var(--muted)">
+                Nothing left here. You're free! 🎉
+            </p>
+
+        `;
+
+    } else {
+
+        home.innerHTML =
+            unfinished
+                .slice(0,4)
+                .map(taskHTML)
+                .join("");
+
+    }
+
+
+    document.getElementById("reward")
+        .textContent =
+        `${(level) * 100} XP → 🎁 New reward`;
+
+}
+
+
+/* ==========================
+   PLAN
+========================== */
+
+function manualPlan() {
+
+    document.getElementById("planList")
+        .innerHTML = `
+
+            <p>
+                ✏️ Plan it however you want.
+                You're in control.
+            </p>
+
+        `;
+
+}
+
+
+function suggestPlan() {
+
+    const tasks =
+        data.tasks
+            .filter(t => !t.completed)
+            .slice()
+            .sort((a,b) => {
+
+                const priorityValue = {
+                    High: 3,
+                    Medium: 2,
+                    Low: 1
+                };
+
+
+                const pA =
+                    priorityValue[a.priority] || 0;
+
+                const pB =
+                    priorityValue[b.priority] || 0;
+
+
+                if (pA !== pB)
+                    return pB - pA;
+
+
+                if (a.deadline && b.deadline)
+                    return a.deadline.localeCompare(
+                        b.deadline
+                    );
+
+
+                if (a.deadline)
+                    return -1;
+
+                if (b.deadline)
+                    return 1;
+
+
+                return 0;
+
+            });
+
+
+    const list =
+        document.getElementById("planList");
+
+
+    if (tasks.length === 0) {
+
+        list.innerHTML = `
+            <p>
+                🎉 Nothing needs planning!
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        tasks.map((task,index) => `
+
+            <div class="task">
+
+                <div class="task-info">
+
+                    <div class="task-name">
+
+                        ${index + 1}.
+                        ${escapeHTML(task.name)}
+
+                    </div>
+
+                    <div class="task-meta">
+
+                        ${task.priority || "No priority"}
+
+                        ${task.deadline
+                            ? " • 📅 " + formatDate(task.deadline)
+                            : ""}
+
+                        ${task.time
+                            ? " • " + task.time + " min"
+                            : ""}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* ==========================
+   FOCUS TIMER
+========================== */
+
+let focusSeconds = 0;
+
+let timerRunning = false;
+
+let timerInterval = null;
+
+
+function chooseDuration(minutes, button) {
+
+    clearInterval(timerInterval);
+
+    timerRunning = false;
+
+
+    document
+        .querySelectorAll(".duration")
+        .forEach(b =>
+            b.classList.remove("selected")
+        );
+
+
+    button.classList.add("selected");
+
+
+    document.getElementById("customMinutes")
+        .style.display = "none";
+
+
+    focusSeconds = minutes * 60;
+
+    updateTimer();
+
+}
+
+
+function customDuration(button) {
+
+    document
+        .querySelectorAll(".duration")
+        .forEach(b =>
+            b.classList.remove("selected")
+        );
+
+
+    button.classList.add("selected");
+
+
+    document.getElementById("customMinutes")
+        .style.display = "block";
+
+
+    document.getElementById("customMinutes")
+        .focus();
+
+}
+
+
+function toggleTimer() {
+
+    if (timerRunning) {
+
+        clearInterval(timerInterval);
+
+        timerRunning = false;
+
+        document.getElementById("startFocus")
+            .textContent = "▶ Resume";
+
+        return;
+
+    }
+
+
+    const custom =
+        document.getElementById("customMinutes")
+            .value;
+
+
+    if (custom) {
+
+        focusSeconds =
+            Number(custom) * 60;
+
+    }
+
+
+    if (focusSeconds <= 0) {
+
+        alert(
+            "Choose a focus duration first! ⏱️"
+        );
+
+        return;
+
+    }
+
+
+    timerRunning = true;
+
+
+    document.getElementById("startFocus")
+        .textContent = "⏸ Pause";
+
+
+    timerInterval =
+        setInterval(() => {
+
+            focusSeconds--;
+
+            updateTimer();
+
+
+            if (focusSeconds <= 0) {
+
+                clearInterval(timerInterval);
+
+                timerRunning = false;
+
+
+                const taskId =
+                    document.getElementById("focusTask")
+                        .value;
+
+
+                if (taskId) {
+
+                    const task =
+                        data.tasks.find(
+                            t => t.id == taskId
+                        );
+
+
+                    if (
+                        task &&
+                        !task.completed
+                    ) {
+
+                        data.xp += 5;
+
+                        save();
+
+                        updateHome();
+
+                    }
+
+                }
+
+
+                alert(
+                    "🎉 Focus session complete! +5 XP"
+                );
+
+
+                resetTimer();
+
+            }
+
+        },1000);
+
+}
+
+
+function resetTimer() {
+
+    clearInterval(timerInterval);
+
+    timerRunning = false;
+
+    focusSeconds = 0;
+
+    updateTimer();
+
+
+    document.getElementById("startFocus")
+        .textContent = "▶ Start";
+
+}
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(focusSeconds / 60);
+
+
+    const seconds =
+        focusSeconds % 60;
+
+
+    document.getElementById("timer")
+        .textContent =
+        `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+}
+
+
+function updateFocusTasks() {
+
+    const select =
+        document.getElementById("focusTask");
+
+
+    const current =
+        select.value;
+
+
+    select.innerHTML = `
+
+        <option value="">
+            Choose a task
+        </option>
+
+    `;
+
+
+    data.tasks
+        .filter(t => !t.completed)
+        .forEach(task => {
+
+            select.innerHTML += `
+
+                <option value="${task.id}">
+                    ${escapeHTML(task.name)}
+                </option>
+
+            `;
+
+        });
+
+
+    select.value = current;
+
+}
+
+
+/* ==========================
+   REVISION
+========================== */
+
+function addRevision(event) {
+
+    event.preventDefault();
+
+
+    const name =
+        document.getElementById("revisionName")
+            .value.trim();
+
+
+    if (!name) return;
+
+
+    data.revisions.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        date:
+            document.getElementById("revisionDate")
+                .value,
+
+        completed: false
+
+    });
+
+
+    save();
+
+    event.target.reset();
+
+    renderRevision();
+
+    updateHome();
+
+}
+
+
+function completeRevision(id) {
+
+    const revision =
+        data.revisions.find(
+            r => r.id === id
+        );
+
+
+    if (
+        !revision ||
+        revision.completed
+    )
+        return;
+
+
+    revision.completed = true;
+
+    data.xp += 15;
+
+
+    save();
+
+    renderRevision();
+
+    updateHome();
+
+}
+
+
+function renderRevision() {
+
+    const list =
+        document.getElementById("revisionList");
+
+
+    if (data.revisions.length === 0) {
+
+        list.innerHTML = `
+
+            <p style="color:var(--muted)">
+                No revision topics yet.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        data.revisions.map(r => `
+
+            <div class="task">
+
+                <input
+                    class="check"
+                    type="checkbox"
+                    ${r.completed ? "checked" : ""}
+                    onchange="completeRevision(${r.id})">
+
+
+                <div class="task-info">
+
+                    <div
+                        class="task-name
+                        ${r.completed ? "done" : ""}">
+
+                        ${escapeHTML(r.name)}
+
+                    </div>
+
+                    <div class="task-meta">
+
+                        ${r.date
+                            ? formatDate(r.date)
+                            : "No date"}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* ==========================
+   SETTINGS
+========================== */
+
+function setAccent(color) {
+
+    data.accent = color;
+
+
+    document.documentElement
+        .style.setProperty(
+            "--accent",
+            color
+        );
+
+
+    document.documentElement
+        .style.setProperty(
+            "--accentSoft",
+            color + "25"
+        );
+
+
+    save();
+
+}
+
+
+function setMode(mode) {
+
+    data.mode = mode;
+
+
+    document.body.classList.remove("light");
+
+
+    if (mode === "light") {
+
+        document.body.classList.add("light");
+
+    }
+
+
+    if (mode === "device") {
+
+        if (
+            window.matchMedia(
+                "(prefers-color-scheme:light)"
+            ).matches
+        ) {
+
+            document.body.classList.add("light");
+
+        }
+
+    }
+
+
+    save();
+
+}
+
+
+function setBackground(background) {
+
+    document.body.classList.remove(
+        "deep-purple",
+        "navy",
+        "deep-green",
+        "charcoal"
+    );
+
+
+    if (background !== "default") {
+
+        document.body.classList.add(
+            background
+        );
+
+    }
+
+
+    data.background = background;
+
+    save();
+
+}
+
+
+/* ==========================
+   NICKNAME
+========================== */
+
+function saveNickname(event) {
+
+    event.preventDefault();
+
+
+    const name =
+        document.getElementById("nickname")
+            .value.trim();
+
+
+    if (!name) return;
+
+
+    data.nickname = name;
+
+    save();
+
+    updateHome();
+
+}
+
+
+/* ==========================
+   HELPERS
+========================== */
+
+function formatDate(date) {
+
+    const d =
+        new Date(date + "T00:00:00");
+
+
+    return d.toLocaleDateString(
+        undefined,
+        {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+function escapeHTML(text) {
+
+    return String(text)
+
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* ==========================
+   LOAD
+========================== */
+
+document.documentElement
+    .style.setProperty(
+        "--accent",
+        data.accent
+    );
+
+
+setMode(data.mode);
+
+setBackground(data.background);
+
+
+document.getElementById("nickname")
+    .value = data.nickname;
+
+
+renderTasks();
+
+renderRevision();
+
+updateHome();
+
+updateFocusTasks();
+
+updateTimer();
+
+</script>
+
+</body>
+</html>
